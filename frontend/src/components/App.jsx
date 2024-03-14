@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 import Layout from './Layout.jsx';
 import MainPage from './MainPage.jsx';
-import LoginPage from './LoginPage.jsx';
+import LoginPage from './LoginPage/LoginPage.jsx';
 import NotFoundPage from './NotFoundPage/NotFoundPage.jsx';
 
 const App = () => (

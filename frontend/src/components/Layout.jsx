@@ -3,7 +3,7 @@ import { Navbar, Container } from 'react-bootstrap';
 
 const Layout = () => (
   <>
-    <Navbar bg="light" expand="lg" shadow>
+    <Navbar bg="light" expand="lg" shadow="true">
       <Container>
         <Navbar.Brand href="/">Hexlet Chat</Navbar.Brand>
       </Container>
