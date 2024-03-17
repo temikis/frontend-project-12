@@ -1,5 +1,6 @@
-// import axios from 'axios';
+import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useFormik } from 'formik';
 import {
   Container,
@@ -9,14 +10,18 @@ import {
   Form,
   Button,
 } from 'react-bootstrap';
+import { useLocation, useNavigate } from 'react-router-dom';
 import reglogo from './reglogo.jpeg';
-// import { useLocation, useNavigate } from 'react-router-dom';
-// import useAuth from '../hooks/index.jsx';
-// import routes from '../routes.js';
+import routes from '../../utils/routes.js';
+import { setCredentials } from '../../store/authSlice.js';
 
 const LoginPage = () => {
   const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   useEffect(() => {
     inputRef.current.focus();
   }, []);
@@ -28,7 +33,22 @@ const LoginPage = () => {
     },
     onSubmit: async (values) => {
       setAuthFailed(true);
-      console.log(values);
+
+      try {
+        const res = await axios.post(routes.login(), values);
+        const userData = res.data;
+        dispatch(setCredentials(userData));
+        const { from } = location.state;
+        navigate(from);
+      } catch (err) {
+        formik.setSubmitting(false);
+        if (err.isAxiosError && err.response.status === 401) {
+          setAuthFailed(true);
+          inputRef.current.select();
+          return;
+        }
+        throw err;
+      }
     },
   });
 
