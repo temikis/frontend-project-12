@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { getCurrentToken } from './authSlice.js';
+import socket from '../utils/socketApi.js';
 
 export const messagesApi = createApi({
   reducerPath: 'messagesApi',
@@ -15,6 +16,7 @@ export const messagesApi = createApi({
       return headers;
     },
   }),
+  tagTypes: ['Messages'],
   endpoints: (builder) => ({
     addMessage: builder.mutation({
       query: (message) => ({
@@ -22,15 +24,39 @@ export const messagesApi = createApi({
         method: 'POST',
         body: message,
       }),
+      invalidatesTags: ['Messages'],
     }),
     getMessages: builder.query({
       query: () => '',
+      async onCacheEntryAdded(
+        _arg,
+        { updateCachedData, cacheDataLoaded, cacheEntryRemoved },
+      ) {
+        try {
+          await cacheDataLoaded;
+
+          const listener = (event) => {
+            updateCachedData((draft) => {
+              draft.push(event);
+            });
+          };
+
+          socket.on('newMessage', listener);
+        } catch {
+          // no-op in case `cacheEntryRemoved` resolves before `cacheDataLoaded`,
+          // in which case `cacheDataLoaded` will throw
+        }
+        await cacheEntryRemoved;
+        socket.removeAllListeners('newMessage');
+      },
+      providesTags: ['Messages'],
     }),
     removeMessage: builder.mutation({
       query: (id) => ({
         url: id,
         method: 'DELETE',
       }),
+      invalidatesTags: ['Messages'],
     }),
     editMessage: builder.mutation({
       query: (id, message) => ({
@@ -38,6 +64,7 @@ export const messagesApi = createApi({
         method: 'PATCH',
         body: message,
       }),
+      invalidatesTags: ['Messages'],
     }),
   }),
 });

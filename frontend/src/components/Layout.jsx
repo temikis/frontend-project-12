@@ -1,5 +1,8 @@
+import React from 'react';
+import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Navbar from 'react-bootstrap/Navbar';
 import { Outlet } from 'react-router-dom';
-import { Navbar, Container, Button } from 'react-bootstrap';
 
 const Layout = () => (
   <div className="d-flex flex-column h-100">

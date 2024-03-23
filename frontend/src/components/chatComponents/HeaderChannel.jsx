@@ -1,10 +1,9 @@
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  ButtonGroup,
-} from 'react-bootstrap';
+import React from 'react';
+import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
 import { PlusSquare } from 'react-bootstrap-icons';
 
 const HeaderChannel = () => (

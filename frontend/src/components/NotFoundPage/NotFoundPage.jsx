@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image } from 'react-bootstrap';
+import Image from 'react-bootstrap/Image';
 import logo404 from './logo404.jpg';
 
 const NotFoundPage = () => (
