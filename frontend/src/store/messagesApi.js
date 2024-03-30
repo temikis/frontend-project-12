@@ -24,7 +24,7 @@ export const messagesApi = createApi({
         method: 'POST',
         body: message,
       }),
-      invalidatesTags: ['Messages'],
+      invalidatesTags: [{ type: 'Messages', id: 'LIST' }],
     }),
     getMessages: builder.query({
       query: () => '',
@@ -35,13 +35,14 @@ export const messagesApi = createApi({
         try {
           await cacheDataLoaded;
 
-          const listener = (event) => {
+          const listenerNewMessage = (event) => {
+            console.log('пришло смс');
             updateCachedData((draft) => {
               draft.push(event);
             });
           };
 
-          socket.on('newMessage', listener);
+          socket.on('newMessage', listenerNewMessage);
         } catch {
           // no-op in case `cacheEntryRemoved` resolves before `cacheDataLoaded`,
           // in which case `cacheDataLoaded` will throw
@@ -49,22 +50,28 @@ export const messagesApi = createApi({
         await cacheEntryRemoved;
         socket.removeAllListeners('newMessage');
       },
-      providesTags: ['Messages'],
+      providesTags: (result) => (
+        result
+          ? [
+            ...result.map(({ id }) => ({ type: 'Messages', id })),
+            { type: 'Messages', id: 'LIST' },
+          ]
+          : [{ type: 'Messages', id: 'LIST' }]),
     }),
     removeMessage: builder.mutation({
       query: (id) => ({
         url: id,
         method: 'DELETE',
       }),
-      invalidatesTags: ['Messages'],
+      invalidatesTags: [{ type: 'Messages', id: 'LIST' }],
     }),
     editMessage: builder.mutation({
-      query: (id, message) => ({
+      query: ({ id, ...patch }) => ({
         url: id,
         method: 'PATCH',
-        body: message,
+        body: patch,
       }),
-      invalidatesTags: ['Messages'],
+      invalidatesTags: [{ type: 'Messages', id: 'LIST' }],
     }),
   }),
 });

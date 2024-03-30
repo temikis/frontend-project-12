@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -12,9 +12,46 @@ import Spinner from './Spinner';
 import { getChannels } from '../store/channelsApi';
 import { getMessages, addMessage } from '../store/messagesApi';
 import { getCurrentUser } from '../store/authSlice';
+import {
+  setModalChannel,
+  getCurrentModalChannel,
+  setActiveChannel,
+  getCurrentActiveChannel,
+} from '../store/uiSlice';
+import getModal from '../modals/index';
+
+const renderModal = (props) => {
+  const {
+    modalChannel,
+    hideModal,
+    channels,
+    activeChannel,
+  } = props;
+
+  if (!modalChannel.type) {
+    return null;
+  }
+
+  const nameChannels = [...channels].map((channel) => channel.name);
+
+  const Component = getModal(modalChannel.type);
+  return (
+    <Component
+      modalChannel={modalChannel}
+      onHide={hideModal}
+      nameChannels={nameChannels}
+      activeChannel={activeChannel}
+    />
+  );
+};
 
 const MainPage = () => {
-  const [activeChannel, setActiveChannel] = useState({ id: null, name: null });
+  const dispatch = useDispatch();
+  const modalChannel = useSelector(getCurrentModalChannel);
+  const hideModal = () => dispatch(setModalChannel({ type: null, channel: null }));
+  const showModal = (type, channel = null) => dispatch(setModalChannel({ type, channel }));
+
+  const activeChannel = useSelector(getCurrentActiveChannel);
   const username = useSelector(getCurrentUser);
   const {
     data: channels,
@@ -38,26 +75,39 @@ const MainPage = () => {
     onSubmitMessage({ body: message, channelId: activeChannel.id, username });
   };
 
+  const handlerMakeActiveChannel = (channel) => {
+    dispatch(setActiveChannel(channel));
+  };
+
   return (
-    <Container className="h-100 my-4 overflow-hidden rounded shadow">
-      <Row className="h-100 bg-white flex-md-row">
-        <Col xs={4} md={2} className="border-end px-0 bg-light flex-column d-flex">
-          <HeaderChannel />
-          <ChannelList
-            channels={channels}
-            onActive={setActiveChannel}
-            activeId={activeChannel.id}
-          />
-        </Col>
-        <Col className="p-0 h-100">
-          <div className="d-flex flex-column h-100">
-            <HeaderMessage channelName={activeChannel.name} countMessage={messages.length} />
-            <MessageList messages={messages} />
-            <MessageInput onSubmit={handlerSubmitMessage} refetch={refetchMessages} />
-          </div>
-        </Col>
-      </Row>
-    </Container>
+    <>
+      <Container className="h-100 my-4 overflow-hidden rounded shadow">
+        <Row className="h-100 bg-white flex-md-row">
+          <Col xs={4} md={2} className="border-end px-0 bg-light flex-column d-flex">
+            <HeaderChannel showModal={showModal} />
+            <ChannelList
+              channels={channels}
+              onActive={handlerMakeActiveChannel}
+              activeId={activeChannel.id}
+              showModal={showModal}
+            />
+          </Col>
+          <Col className="p-0 h-100">
+            <div className="d-flex flex-column h-100">
+              <HeaderMessage channelName={activeChannel.name} countMessage={messages.length} />
+              <MessageList messages={messages} />
+              <MessageInput onSubmit={handlerSubmitMessage} refetch={refetchMessages} />
+            </div>
+          </Col>
+        </Row>
+      </Container>
+      {renderModal({
+        modalChannel,
+        hideModal,
+        channels,
+        activeChannel,
+      })}
+    </>
   );
 };
 

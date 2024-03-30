@@ -4,10 +4,15 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Nav from 'react-bootstrap/Nav';
-// import cn from 'classnames'; добавить variant="secondary"
-// { id: generalChannelId, name: 'general', removable: false }
 
-const ChannelList = ({ channels, onActive, activeId }) => {
+const ChannelList = (props) => {
+  const {
+    channels,
+    onActive,
+    activeId,
+    showModal,
+  } = props;
+
   const getChannel = (channel) => {
     const isActive = channel.id === activeId;
     const variant = isActive ? 'secondary' : 'light';
@@ -16,8 +21,8 @@ const ChannelList = ({ channels, onActive, activeId }) => {
       const idDropdownButton = `bg-nested-dropdown-id${id}`;
       return (
         <DropdownButton as={ButtonGroup} variant={variant} title="" id={idDropdownButton}>
-          <Dropdown.Item eventKey="1">Удалить</Dropdown.Item>
-          <Dropdown.Item eventKey="2">Переименовать</Dropdown.Item>
+          <Dropdown.Item onClick={() => { showModal('removing', channel); }}>Удалить</Dropdown.Item>
+          <Dropdown.Item onClick={() => { showModal('renaming', channel); }}>Переименовать</Dropdown.Item>
         </DropdownButton>
       );
     };
