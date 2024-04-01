@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const nameInLocalStorage = 'Mini-chat v1.0.0';
+
 const getInitialState = () => {
-  const storedState = localStorage.getItem('Mini-chat v1.0.0');
+  const storedState = localStorage.getItem(nameInLocalStorage);
   return storedState ? JSON.parse(storedState) : { username: null, token: null };
 };
 
@@ -14,17 +16,25 @@ const authSlice = createSlice({
     setCredentials: (state, action) => {
       const { username, token } = action.payload;
       const userDataString = JSON.stringify(action.payload);
-      localStorage.setItem('Mini-chat v1.0.0', userDataString);
+      localStorage.setItem(nameInLocalStorage, userDataString);
       return {
         ...state,
         username,
         token,
       };
     },
+    removeCredentials: (state) => {
+      localStorage.removeItem(nameInLocalStorage);
+      return {
+        ...state,
+        username: null,
+        token: null,
+      };
+    },
   },
 });
 
-export const { setCredentials } = authSlice.actions;
+export const { setCredentials, removeCredentials } = authSlice.actions;
 
 export default authSlice.reducer;
 
