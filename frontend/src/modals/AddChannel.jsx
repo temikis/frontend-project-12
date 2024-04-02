@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import {
@@ -15,6 +16,7 @@ const AddChannel = (props) => {
   const { onHide, nameChannels } = props;
   const [onSubmitChannel] = addChannel();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const onSubmitAddNewChannel = async (newChannel) => {
     const response = await onSubmitChannel(newChannel);
@@ -25,10 +27,10 @@ const AddChannel = (props) => {
   const schema = yup.object().shape({
     name: yup
       .string()
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов')
-      .notOneOf(nameChannels, 'Должно быть уникальным')
-      .required('Обязательное поле'),
+      .min(3, t('validate.min3max20'))
+      .max(20, t('validate.min3max20'))
+      .notOneOf(nameChannels, t('validate.notOneOf'))
+      .required(t('validate.required')),
   });
 
   const inputRef = useRef();
@@ -52,14 +54,14 @@ const AddChannel = (props) => {
       }) => (
         <Modal show onHide={onHide}>
           <Modal.Header closeButton>
-            <Modal.Title>Добавить канал</Modal.Title>
+            <Modal.Title>{t('modal.addChannel.title')}</Modal.Title>
           </Modal.Header>
 
           <Modal.Body>
             <Form noValidate onSubmit={handleSubmit}>
               <Form.Group className="mb-2" controlId="validationAdd">
                 <InputGroup hasValidation>
-                  <Form.Label className="visually-hidden">Имя канала</Form.Label>
+                  <Form.Label className="visually-hidden">{t('modal.addChannel.name')}</Form.Label>
                   <Form.Control
                     type="text"
                     ref={inputRef}
@@ -76,10 +78,10 @@ const AddChannel = (props) => {
               </Form.Group>
               <Form.Group className="d-flex justify-content-end">
                 <Button className="me-2" variant="secondary" onClick={onHide}>
-                  Отменить
+                  {t('buttons.cancel')}
                 </Button>
                 <Button variant="primary" type="submit">
-                  Отправить
+                  {t('buttons.send')}
                 </Button>
               </Form.Group>
             </Form>

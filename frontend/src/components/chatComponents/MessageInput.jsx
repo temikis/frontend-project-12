@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ArrowUpCircleFill } from 'react-bootstrap-icons';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
@@ -7,6 +8,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 
 const MessageInput = ({ onSubmit, refetch }) => {
   const [message, setMessage] = useState('');
+  const { t } = useTranslation();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,15 +23,15 @@ const MessageInput = ({ onSubmit, refetch }) => {
         <InputGroup hasValidation>
           <Form.Control
             name="body"
-            aria-label="Новое сообщение"
-            placeholder="Введите сообщение..."
+            aria-label={t('chat.input.label')}
+            placeholder={t('chat.input.placeholder')}
             className="border-0 p-0 ps-2"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
           <Button type="submit" className="btn-group-vertical" disabled={!message}>
             <ArrowUpCircleFill size={20} color="currentColor" />
-            <span className="visually-hidden">Отправить</span>
+            <span className="visually-hidden">{t('buttons.send')}</span>
           </Button>
         </InputGroup>
       </Form>

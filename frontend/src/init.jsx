@@ -14,6 +14,10 @@ const init = async () => {
     .init({
       resources,
       fallbackLng: 'ru',
+      interpolation: {
+        escapeValue: false,
+      },
+      debug: true,
     });
 
   return (

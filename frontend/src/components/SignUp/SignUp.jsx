@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -19,6 +20,7 @@ const SignUp = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const inputRef = useRef();
+  const { t } = useTranslation();
 
   const onSubmitSignUp = async ({ username, password }, props) => {
     const { setErrors, setSubmitting } = props;
@@ -31,7 +33,7 @@ const SignUp = () => {
     } catch (err) {
       setSubmitting(false);
       if (err.isAxiosError && err.response.status === 409) {
-        setErrors({ username: 'Такой пользователь уже существует' });
+        setErrors({ username: t('errors.userExists') });
         inputRef.current.select();
         return;
       }
@@ -42,17 +44,17 @@ const SignUp = () => {
   const schema = yup.object().shape({
     username: yup
       .string()
-      .min(3, 'От 3 до 20 символов')
-      .max(20, 'От 3 до 20 символов')
-      .required('Обязательное поле'),
+      .min(3, t('validate.min3max20'))
+      .max(20, t('validate.min3max20'))
+      .required(t('validate.required')),
     password: yup
       .string()
-      .min(6, 'Не менее 6 символов')
-      .required('Обязательное поле'),
+      .min(6, t('validate.min6'))
+      .required(t('validate.required')),
     confirmPassword: yup
       .string()
-      .oneOf([yup.ref('password'), null], 'Пароли должны совпадать')
-      .required('Обязательное поле'),
+      .oneOf([yup.ref('password'), null], t('validate.oneOf'))
+      .required(t('validate.required')),
   });
 
   const getFormikForm = () => (
@@ -73,9 +75,9 @@ const SignUp = () => {
         isSubmitting,
       }) => (
         <Form className="w-50" onSubmit={handleSubmit}>
-          <h1 className="text-center mb-4">Регистрация</h1>
+          <h1 className="text-center mb-4">{t('signUp.title')}</h1>
 
-          <FloatingLabel className="mb-3" controlId="username" label="Имя пользователя">
+          <FloatingLabel className="mb-3" controlId="username" label={t('signUp.form.username')}>
             <Form.Control
               type="text"
               placeholder="username"
@@ -92,7 +94,7 @@ const SignUp = () => {
             </Form.Control.Feedback>
           </FloatingLabel>
 
-          <FloatingLabel className="mb-3" controlId="password" label="Пароль">
+          <FloatingLabel className="mb-3" controlId="password" label={t('signUp.form.password')}>
             <Form.Control
               type="password"
               placeholder="password"
@@ -107,7 +109,7 @@ const SignUp = () => {
             </Form.Control.Feedback>
           </FloatingLabel>
 
-          <FloatingLabel className="mb-3" controlId="confirmPassword" label="Подтвердите пароль">
+          <FloatingLabel className="mb-3" controlId="confirmPassword" label={t('signUp.form.confirmPassword')}>
             <Form.Control
               type="password"
               placeholder="confirm password"
@@ -122,7 +124,7 @@ const SignUp = () => {
             </Form.Control.Feedback>
           </FloatingLabel>
 
-          <Button variant="outline-primary" type="submit" disabled={isSubmitting} className="w-100">Зарегистрироваться</Button>
+          <Button variant="outline-primary" type="submit" disabled={isSubmitting} className="w-100">{t('buttons.signUp')}</Button>
         </Form>
       )}
     </Formik>
@@ -134,7 +136,7 @@ const SignUp = () => {
         <Col xs={12} md={8} xxl={6}>
           <Card className="shadow-sm">
             <Card.Body className="d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
-              <div><img src={logosingup} className="rounded-circle" alt="Регистрация" /></div>
+              <div><img src={logosingup} className="rounded-circle" alt={t('signUp.logo')} /></div>
               {getFormikForm()}
             </Card.Body>
           </Card>
