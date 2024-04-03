@@ -1,5 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { removeChannel } from '../store/channelsApi';
@@ -11,7 +12,15 @@ const RemoveChannel = (props) => {
   const { t } = useTranslation();
 
   const onDelete = async () => {
-    await onSubmitChannel(id);
+    onSubmitChannel(id)
+      .unwrap()
+      .then(() => {
+        toast.success(t('toast.deleteChannel'));
+      })
+      .catch((error) => {
+        toast.error(t('toast.errorNetwork'));
+        console.log(error);
+      });
     onHide();
   };
 

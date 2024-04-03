@@ -94,5 +94,11 @@ export default {
         placeholder: 'Введите сообщение...',
       },
     },
+    toast: {
+      createChannel: 'Канал создан',
+      renameChannel: 'Канал переименован',
+      deleteChannel: 'Канал удалён',
+      errorNetwork: 'Ошибка соединения',
+    },
   },
 };

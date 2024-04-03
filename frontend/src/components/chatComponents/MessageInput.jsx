@@ -6,7 +6,7 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 
-const MessageInput = ({ onSubmit, refetch }) => {
+const MessageInput = ({ onSubmit }) => {
   const [message, setMessage] = useState('');
   const { t } = useTranslation();
 
@@ -14,7 +14,6 @@ const MessageInput = ({ onSubmit, refetch }) => {
     e.preventDefault();
     onSubmit(message);
     setMessage('');
-    refetch();
   };
 
   return (

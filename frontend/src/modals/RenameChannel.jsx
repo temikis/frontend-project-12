@@ -2,12 +2,11 @@ import React, { useEffect, useRef } from 'react';
 import { Formik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
-import {
-  Modal,
-  Button,
-  Form,
-  InputGroup,
-} from 'react-bootstrap';
+import { toast } from 'react-toastify';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
 import { editChannel } from '../store/channelsApi';
 
 const RenameChannel = (props) => {
@@ -18,7 +17,16 @@ const RenameChannel = (props) => {
 
   const onSubmitRenameChannel = async (newNameChannel) => {
     const { name } = newNameChannel;
-    await onSubmitChannel({ id, name });
+    onSubmitChannel({ id, name })
+      .unwrap()
+      .then(() => {
+        toast.success(t('toast.renameChannel'));
+      })
+      .catch((error) => {
+        toast.error(t('toast.errorNetwork'));
+        console.log(error);
+      });
+
     onHide();
   };
 

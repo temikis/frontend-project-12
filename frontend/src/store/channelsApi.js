@@ -59,13 +59,12 @@ export const channelsApi = createApi({
               }
             });
           };
+
           const listenerEdit = (event) => {
             updateCachedData((draft) => {
-              const index = draft.findIndex((item) => item.id === event.id);
-              console.log(draft[index].name);
-              console.log(event.name);
-              // eslint-disable-next-line no-param-reassign
-              if (index !== -1) { draft[index].name = event.name; }
+              const channel = draft.find((item) => item.id === event.id);
+              channel.name = event.name;
+              if (channel) { channel.name = event.name; }
             });
           };
 

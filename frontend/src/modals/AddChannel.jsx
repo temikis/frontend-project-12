@@ -3,12 +3,11 @@ import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import {
-  Modal,
-  Button,
-  Form,
-  InputGroup,
-} from 'react-bootstrap';
+import { toast } from 'react-toastify';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
 import { addChannel } from '../store/channelsApi';
 import { setActiveChannel } from '../store/uiSlice';
 
@@ -19,8 +18,18 @@ const AddChannel = (props) => {
   const { t } = useTranslation();
 
   const onSubmitAddNewChannel = async (newChannel) => {
-    const response = await onSubmitChannel(newChannel);
-    dispatch(setActiveChannel(response.data));
+    onSubmitChannel(newChannel)
+      .unwrap()
+      .then((response) => {
+        console.log(response);
+        dispatch(setActiveChannel(response));
+        toast.success(t('toast.createChannel'));
+      })
+      .catch((error) => {
+        toast.error(t('toast.errorNetwork'));
+        console.log(error);
+      });
+
     onHide();
   };
 

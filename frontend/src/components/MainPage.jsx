@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -56,12 +57,12 @@ const MainPage = () => {
   const {
     data: channels,
     isLoading: isLoadingChannels,
-    // refetch: refetchChannels,
+    error: errorChannels,
   } = getChannels();
   const {
     data: allMessages,
     isLoading: isLoadingMessages,
-    refetch: refetchMessages,
+    error: errorMessages,
   } = getMessages();
   const [onSubmitMessage] = addMessage();
 
@@ -69,7 +70,12 @@ const MainPage = () => {
     return <Spinner />;
   }
 
-  const messages = allMessages.filter((message) => message.channelId === activeChannel.id);
+  if (errorMessages || errorChannels) {
+    toast.warn('Проблема с получением данных');
+  }
+
+  const messages = errorChannels
+    ? [] : allMessages.filter((message) => message.channelId === activeChannel.id);
 
   const handlerSubmitMessage = (message) => {
     onSubmitMessage({ body: message, channelId: activeChannel.id, username });
@@ -88,15 +94,15 @@ const MainPage = () => {
             <ChannelList
               channels={channels}
               onActive={handlerMakeActiveChannel}
-              activeId={activeChannel.id}
+              activeId={activeChannel?.id}
               showModal={showModal}
             />
           </Col>
           <Col className="p-0 h-100">
             <div className="d-flex flex-column h-100">
-              <HeaderMessage channelName={activeChannel.name} countMessage={messages.length} />
+              <HeaderMessage channelName={activeChannel?.name} countMessage={messages.length} />
               <MessageList messages={messages} />
-              <MessageInput onSubmit={handlerSubmitMessage} refetch={refetchMessages} />
+              <MessageInput onSubmit={handlerSubmitMessage} />
             </div>
           </Col>
         </Row>

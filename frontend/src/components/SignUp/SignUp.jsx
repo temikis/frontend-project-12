@@ -3,6 +3,7 @@ import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -37,6 +38,7 @@ const SignUp = () => {
         inputRef.current.select();
         return;
       }
+      toast.error(t('toast.errorNetwork'));
       throw err;
     }
   };

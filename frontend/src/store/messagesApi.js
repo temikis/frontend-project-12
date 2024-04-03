@@ -36,7 +36,6 @@ export const messagesApi = createApi({
           await cacheDataLoaded;
 
           const listenerNewMessage = (event) => {
-            console.log('пришло смс');
             updateCachedData((draft) => {
               draft.push(event);
             });

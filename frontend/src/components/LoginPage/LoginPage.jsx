@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
+import { toast } from 'react-toastify';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
@@ -45,6 +46,7 @@ const LoginPage = () => {
           inputRef.current.select();
           return;
         }
+        toast.error(t('toast.errorNetwork'));
         throw err;
       }
     },
