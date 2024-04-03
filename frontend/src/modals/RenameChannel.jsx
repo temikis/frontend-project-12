@@ -3,6 +3,7 @@ import { Formik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import { toast } from 'react-toastify';
+import filter from 'leo-profanity';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
@@ -17,7 +18,8 @@ const RenameChannel = (props) => {
 
   const onSubmitRenameChannel = async (newNameChannel) => {
     const { name } = newNameChannel;
-    onSubmitChannel({ id, name })
+    const filteredName = filter.clean(name);
+    onSubmitChannel({ id, name: filteredName })
       .unwrap()
       .then(() => {
         toast.success(t('toast.renameChannel'));
@@ -36,6 +38,7 @@ const RenameChannel = (props) => {
       .min(3, t('validate.min3max20'))
       .max(20, t('validate.min3max20'))
       .notOneOf(nameChannels, t('validate.notOneOf'))
+      .test('mute-test', t('validate.mute'), (value) => !filter.check(value))
       .required(t('validate.required')),
   });
 

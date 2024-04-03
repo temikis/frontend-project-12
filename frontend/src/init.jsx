@@ -3,6 +3,7 @@ import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { Provider } from 'react-redux';
 import { ToastContainer, Slide } from 'react-toastify';
+import filter from 'leo-profanity';
 import 'react-toastify/dist/ReactToastify.css';
 import App from './components/App';
 import resources from './locales/index.js';
@@ -21,6 +22,8 @@ const init = async () => {
       },
       debug: true,
     });
+
+  filter.loadDictionary('ru');
 
   return (
     <Provider store={store}>

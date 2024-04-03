@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ArrowUpCircleFill } from 'react-bootstrap-icons';
+import filter from 'leo-profanity';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -12,7 +13,7 @@ const MessageInput = ({ onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(message);
+    onSubmit(filter.clean(message));
     setMessage('');
   };
 
