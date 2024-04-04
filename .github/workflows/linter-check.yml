@@ -1,0 +1,14 @@
+name: linter-check
+
+on: push
+
+env:
+  CI: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: make install && make -C frontend install
+      - run: make lint-frontend

@@ -2,6 +2,7 @@ import React from 'react';
 import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { Provider } from 'react-redux';
+import { Provider as ProviderRollerbar, ErrorBoundary } from '@rollbar/react';
 import { ToastContainer, Slide } from 'react-toastify';
 import filter from 'leo-profanity';
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,30 +21,41 @@ const init = async () => {
       interpolation: {
         escapeValue: false,
       },
-      debug: true,
+      debug: false,
     });
 
   filter.loadDictionary('ru');
 
+  const rollbarConfig = {
+    accessToken: process.env.POST_CLIENT_ITEM_ACCESS_TOKEN,
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+    environment: 'production',
+  };
+
   return (
     <Provider store={store}>
       <React.StrictMode>
-        <I18nextProvider i18n={i18n}>
-          <App />
-          <ToastContainer
-            position="top-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover={false}
-            theme="light"
-            transition={Slide}
-          />
-        </I18nextProvider>
+        <ProviderRollerbar config={rollbarConfig}>
+          <ErrorBoundary>
+            <I18nextProvider i18n={i18n}>
+              <App />
+              <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover={false}
+                theme="light"
+                transition={Slide}
+              />
+            </I18nextProvider>
+          </ErrorBoundary>
+        </ProviderRollerbar>
       </React.StrictMode>
     </Provider>
   );
