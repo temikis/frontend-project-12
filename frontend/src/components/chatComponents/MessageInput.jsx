@@ -19,7 +19,7 @@ const MessageInput = ({ onSubmit }) => {
 
   return (
     <Container className="mt-auto px-5 py-3">
-      <Form onSubmit={handleSubmit} hasValidation>
+      <Form onSubmit={handleSubmit}>
         <InputGroup size="lg">
           <Form.Control
             type="text"

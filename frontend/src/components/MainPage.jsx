@@ -48,28 +48,19 @@ const renderModal = (props) => {
 const MainPage = () => {
   const dispatch = useDispatch();
   const modalChannel = useSelector(getCurrentModalChannel);
-  const hideModal = () => dispatch(setModalChannel({ type: null, channel: null }));
-  const showModal = (type, channel = null) => dispatch(setModalChannel({ type, channel }));
-
   const activeChannel = useSelector(getCurrentActiveChannel);
   const username = useSelector(getCurrentUser);
-  const {
-    data: channels,
-    isLoading: isLoadingChannels,
-    error: errorChannels,
-  } = getChannels();
-  const {
-    data: allMessages,
-    isLoading: isLoadingMessages,
-  } = getMessages();
+
+  const { data: channels, isLoading: isLoadingChannels } = getChannels();
+  const { data: messages, isLoading: isLoadingMessages } = getMessages();
   const [onSubmitMessage] = addMessage();
+
+  const hideModal = () => dispatch(setModalChannel({ type: null, channel: null }));
+  const showModal = (type, channel = null) => dispatch(setModalChannel({ type, channel }));
 
   if (isLoadingChannels || isLoadingMessages) {
     return <Spinner />;
   }
-
-  const messages = errorChannels
-    ? [] : allMessages.filter((message) => message.channelId === activeChannel.id);
 
   const handlerSubmitMessage = (message) => {
     onSubmitMessage({ body: message, channelId: activeChannel.id, username });
