@@ -19,13 +19,14 @@ const MessageInput = ({ onSubmit }) => {
 
   return (
     <Container className="mt-auto px-5 py-3">
-      <Form onSubmit={handleSubmit} noValidate className="py-1 border rounded-2">
-        <InputGroup hasValidation>
+      <Form onSubmit={handleSubmit} hasValidation>
+        <InputGroup size="lg">
           <Form.Control
+            type="text"
             name="body"
             aria-label={t('chat.input.label')}
             placeholder={t('chat.input.placeholder')}
-            className="border-0 p-0 ps-2"
+            className=""
             value={message}
             onChange={(e) => setMessage(e.target.value)}
           />
