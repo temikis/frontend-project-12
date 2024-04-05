@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { toast } from 'react-toastify';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -62,16 +61,11 @@ const MainPage = () => {
   const {
     data: allMessages,
     isLoading: isLoadingMessages,
-    error: errorMessages,
   } = getMessages();
   const [onSubmitMessage] = addMessage();
 
   if (isLoadingChannels || isLoadingMessages) {
     return <Spinner />;
-  }
-
-  if (errorMessages || errorChannels) {
-    toast.warn('Проблема с получением данных');
   }
 
   const messages = errorChannels
@@ -89,7 +83,7 @@ const MainPage = () => {
     <>
       <Container className="h-100 my-4 overflow-hidden rounded shadow">
         <Row className="h-100 bg-white flex-md-row">
-          <Col xs={4} md={2} className="border-end px-0 bg-light flex-column d-flex">
+          <Col xs={4} md={2} className="border-end px-0 bg-light flex-column d-flex h-100">
             <HeaderChannel showModal={showModal} />
             <ChannelList
               channels={channels}

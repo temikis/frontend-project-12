@@ -2,7 +2,7 @@ import React from 'react';
 import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { Provider } from 'react-redux';
-import { Provider as ProviderRollerbar, ErrorBoundary } from '@rollbar/react';
+import { Provider as ProviderRollbar, ErrorBoundary } from '@rollbar/react';
 import { ToastContainer, Slide } from 'react-toastify';
 import filter from 'leo-profanity';
 import 'react-toastify/dist/ReactToastify.css';
@@ -36,7 +36,7 @@ const init = async () => {
   return (
     <Provider store={store}>
       <React.StrictMode>
-        <ProviderRollerbar config={rollbarConfig}>
+        <ProviderRollbar config={rollbarConfig}>
           <ErrorBoundary>
             <I18nextProvider i18n={i18n}>
               <App />
@@ -55,7 +55,7 @@ const init = async () => {
               />
             </I18nextProvider>
           </ErrorBoundary>
-        </ProviderRollerbar>
+        </ProviderRollbar>
       </React.StrictMode>
     </Provider>
   );

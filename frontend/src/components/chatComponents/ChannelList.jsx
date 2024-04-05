@@ -36,7 +36,7 @@ const ChannelList = (props) => {
     return (
       <Nav.Item key={channel.id} className="w-100">
         <ButtonGroup className="w-100">
-          <Button onClick={onClick} variant={variant} className="w-100 rounded-0 text-start">
+          <Button onClick={onClick} variant={variant} className="w-100 rounded-0 text-start text-truncate">
             <span className="me-1">#</span>
             {channel.name}
           </Button>
