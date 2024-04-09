@@ -25,6 +25,7 @@ const init = async () => {
     });
 
   filter.loadDictionary('ru');
+  filter.loadDictionary('en');
 
   const rollbarConfig = {
     accessToken: process.env.POST_CLIENT_ITEM_ACCESS_TOKEN,
