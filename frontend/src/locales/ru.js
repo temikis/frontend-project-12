@@ -27,6 +27,7 @@ export default {
         count_many: '{{count}} кликов',
       },
       reset: 'Сбросить',
+      management: 'Управление каналом',
     },
     loginPage: {
       logo: 'Войти',

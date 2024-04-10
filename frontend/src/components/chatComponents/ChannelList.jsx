@@ -19,29 +19,31 @@ const ChannelList = (props) => {
     const isActive = channel.id === activeId;
     const variant = isActive ? 'secondary' : 'light';
     const onClick = () => { onActive(channel); };
-    const dropdown = (id) => {
-      const idDropdownButton = `bg-nested-dropdown-id${id}`;
-      return (
-        <DropdownButton as={ButtonGroup} variant={variant} title="" id={idDropdownButton}>
+    const dropdown = () => (
+      <>
+        <Dropdown.Toggle split variant={variant} id="dropdown-split-basic">
+          <span className="visually-hidden">{t('buttons.management')}</span>
+        </Dropdown.Toggle>
+        <Dropdown.Menu>
           <Dropdown.Item onClick={() => { showModal('removing', channel); }}>
             {t('chat.channelList.delete')}
           </Dropdown.Item>
           <Dropdown.Item onClick={() => { showModal('renaming', channel); }}>
             {t('chat.channelList.rename')}
           </Dropdown.Item>
-        </DropdownButton>
-      );
-    };
+        </Dropdown.Menu>
+      </>
+    );
 
     return (
       <Nav.Item key={channel.id} className="w-100">
-        <ButtonGroup className="w-100">
+        <Dropdown as={ButtonGroup} className="d-flex dropdown btn-group">
           <Button onClick={onClick} variant={variant} className="w-100 rounded-0 text-start text-truncate">
             <span className="me-1">#</span>
             {channel.name}
           </Button>
           {channel.removable && dropdown(channel.id)}
-        </ButtonGroup>
+        </Dropdown>
       </Nav.Item>
     );
   };
