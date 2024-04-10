@@ -1,12 +1,13 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { getCurrentToken } from './authSlice.js';
 import { setActiveChannel, getCurrentDefaultChannel, getCurrentActiveChannel } from './uiSlice.js';
+import routes from '../utils/routes.js';
 import socket from '../utils/socketApi.js';
 
 export const channelsApi = createApi({
   reducerPath: 'channelsApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: '/api/v1/channels',
+    baseUrl: routes.channelsPath(),
     prepareHeaders: (headers, { getState }) => {
       const token = getCurrentToken(getState());
 

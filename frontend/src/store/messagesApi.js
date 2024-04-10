@@ -1,11 +1,12 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { getCurrentToken } from './authSlice.js';
+import routes from '../utils/routes.js';
 import socket from '../utils/socketApi.js';
 
 export const messagesApi = createApi({
   reducerPath: 'messagesApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: '/api/v1/messages',
+    baseUrl: routes.messagesPath(),
     prepareHeaders: (headers, { getState }) => {
       const token = getCurrentToken(getState());
 
