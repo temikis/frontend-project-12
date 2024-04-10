@@ -35,6 +35,7 @@ const RenameChannel = (props) => {
   const schema = yup.object().shape({
     name: yup
       .string()
+      .trim()
       .min(3, t('validate.min3max20'))
       .max(20, t('validate.min3max20'))
       .notOneOf(nameChannels, t('validate.notOneOf'))

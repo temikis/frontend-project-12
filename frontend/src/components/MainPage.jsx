@@ -10,8 +10,7 @@ import MessageList from './chatComponents/MessageList';
 import MessageInput from './chatComponents/MessageInput';
 import Spinner from './Spinner';
 import { getChannels } from '../store/channelsApi';
-import { getMessages, addMessage } from '../store/messagesApi';
-import { getCurrentUser } from '../store/authSlice';
+import { getMessages } from '../store/messagesApi';
 import {
   setModalChannel,
   getCurrentModalChannel,
@@ -49,11 +48,15 @@ const MainPage = () => {
   const dispatch = useDispatch();
   const modalChannel = useSelector(getCurrentModalChannel);
   const activeChannel = useSelector(getCurrentActiveChannel);
-  const username = useSelector(getCurrentUser);
+  const channelId = activeChannel.id;
 
   const { data: channels, isLoading: isLoadingChannels } = getChannels();
-  const { data: messages, isLoading: isLoadingMessages } = getMessages();
-  const [onSubmitMessage] = addMessage();
+  const { data: messages, isLoadingMessages } = getMessages(undefined, {
+    selectFromResult: ({ data, isLoading }) => ({
+      data: data?.filter((message) => message.channelId === channelId),
+      isLoadingMessages: isLoading,
+    }),
+  });
 
   const hideModal = () => dispatch(setModalChannel({ type: null, channel: null }));
   const showModal = (type, channel = null) => dispatch(setModalChannel({ type, channel }));
@@ -61,10 +64,6 @@ const MainPage = () => {
   if (isLoadingChannels || isLoadingMessages) {
     return <Spinner />;
   }
-
-  const handlerSubmitMessage = (message) => {
-    onSubmitMessage({ body: message, channelId: activeChannel.id, username });
-  };
 
   const handlerMakeActiveChannel = (channel) => {
     dispatch(setActiveChannel(channel));
@@ -87,7 +86,7 @@ const MainPage = () => {
             <div className="d-flex flex-column h-100">
               <HeaderMessage channelName={activeChannel?.name} countMessage={messages.length} />
               <MessageList messages={messages} />
-              <MessageInput onSubmit={handlerSubmitMessage} />
+              <MessageInput activeChannel={activeChannel} />
             </div>
           </Col>
         </Row>

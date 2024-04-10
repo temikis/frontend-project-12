@@ -24,8 +24,9 @@ const init = async () => {
       debug: false,
     });
 
-  filter.loadDictionary('ru');
   filter.loadDictionary('en');
+  const russianBadWords = filter.getDictionary('ru');
+  filter.add(russianBadWords);
 
   const rollbarConfig = {
     accessToken: process.env.POST_CLIENT_ITEM_ACCESS_TOKEN,
