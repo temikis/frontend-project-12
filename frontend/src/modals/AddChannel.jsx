@@ -43,7 +43,6 @@ const AddChannel = (props) => {
       .min(3, t('validate.min3max20'))
       .max(20, t('validate.min3max20'))
       .notOneOf(nameChannels, t('validate.notOneOf'))
-      // .test('mute-test', t('validate.mute'), (value) => !filter.check(value))
       .required(t('validate.required')),
   });
 

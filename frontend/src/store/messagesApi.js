@@ -1,7 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { getCurrentToken } from './authSlice.js';
 import routes from '../utils/routes.js';
-import socket from '../utils/socketApi.js';
 
 export const messagesApi = createApi({
   reducerPath: 'messagesApi',
@@ -29,27 +28,6 @@ export const messagesApi = createApi({
     }),
     getMessages: builder.query({
       query: () => '',
-      async onCacheEntryAdded(
-        _arg,
-        { updateCachedData, cacheDataLoaded, cacheEntryRemoved },
-      ) {
-        try {
-          await cacheDataLoaded;
-
-          const listenerNewMessage = (event) => {
-            updateCachedData((draft) => {
-              draft.push(event);
-            });
-          };
-
-          socket.on('newMessage', listenerNewMessage);
-        } catch {
-          // no-op in case `cacheEntryRemoved` resolves before `cacheDataLoaded`,
-          // in which case `cacheDataLoaded` will throw
-        }
-        await cacheEntryRemoved;
-        socket.removeAllListeners('newMessage');
-      },
       providesTags: (result) => (
         result
           ? [

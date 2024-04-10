@@ -39,7 +39,6 @@ const RenameChannel = (props) => {
       .min(3, t('validate.min3max20'))
       .max(20, t('validate.min3max20'))
       .notOneOf(nameChannels, t('validate.notOneOf'))
-      // .test('mute-test', t('validate.mute'), (value) => !filter.check(value))
       .required(t('validate.required')),
   });
 
@@ -64,14 +63,14 @@ const RenameChannel = (props) => {
       }) => (
         <Modal show onHide={onHide}>
           <Modal.Header closeButton>
-            <Modal.Title>{t('modal.addChannel.title')}</Modal.Title>
+            <Modal.Title>{t('modal.renameChannel.title')}</Modal.Title>
           </Modal.Header>
 
           <Modal.Body>
             <Form noValidate onSubmit={handleSubmit}>
               <Form.Group className="mb-2" controlId="validationAdd">
                 <InputGroup hasValidation>
-                  <Form.Label className="visually-hidden">{t('modal.addChannel.name')}</Form.Label>
+                  <Form.Label className="visually-hidden">{t('modal.renameChannel.name')}</Form.Label>
                   <Form.Control
                     type="text"
                     ref={inputRef}
