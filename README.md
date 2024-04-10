@@ -11,7 +11,7 @@ A minichat that has a login and registration page. It also supports creating, re
 ---
 ### Demonstration:
 [Project link on Render](https://minichat-xwkx.onrender.com)
-![Screenshot](Снимок экрана 2024-04-10 в 23.23.02.png)
+![Screenshot](screenchat.png)
 ---
 ### Requirements:
 Node.js: 16 and above
