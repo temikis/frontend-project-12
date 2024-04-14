@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
@@ -13,9 +13,21 @@ const ChannelList = (props) => {
     showModal,
   } = props;
   const { t } = useTranslation();
+  const activeChannelRef = useRef(null);
+
+  const scrollToActiveChannel = () => {
+    if (activeChannelRef.current) {
+      activeChannelRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  };
+
+  useEffect(() => {
+    scrollToActiveChannel();
+  }, [channels]);
 
   const getChannel = (channel) => {
     const isActive = channel.id === activeId;
+    const ref = isActive ? activeChannelRef : null;
     const variant = isActive ? 'secondary' : 'light';
     const onClick = () => { onActive(channel); };
     const dropdown = () => (
@@ -35,13 +47,13 @@ const ChannelList = (props) => {
     );
 
     return (
-      <Nav.Item key={channel.id} className="w-100">
+      <Nav.Item key={channel.id} ref={ref} className="w-100">
         <Dropdown as={ButtonGroup} className="d-flex dropdown btn-group">
           <Button onClick={onClick} variant={variant} className="w-100 rounded-0 text-start text-truncate">
             <span className="me-1">#</span>
             {channel.name}
           </Button>
-          {channel.removable && dropdown(channel.id)}
+          {channel.removable && dropdown()}
         </Dropdown>
       </Nav.Item>
     );
