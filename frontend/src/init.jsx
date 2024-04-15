@@ -5,7 +5,7 @@ import { io } from 'socket.io-client';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { Provider as ProviderRollbar, ErrorBoundary } from '@rollbar/react';
 import { ToastContainer, Slide } from 'react-toastify';
-import filter from 'leo-profanity';
+import { FilterProvider } from './contexts/filterContex.jsx';
 import 'react-toastify/dist/ReactToastify.css';
 import App from './components/App';
 import resources from './locales/index.js';
@@ -67,10 +67,6 @@ const init = async () => {
       debug: false,
     });
 
-  filter.loadDictionary('en');
-  const russianBadWords = filter.getDictionary('ru');
-  filter.add(russianBadWords);
-
   const rollbarConfig = {
     accessToken: process.env.POST_CLIENT_ITEM_ACCESS_TOKEN,
     captureUncaught: true,
@@ -83,22 +79,24 @@ const init = async () => {
       <React.StrictMode>
         <ProviderRollbar config={rollbarConfig}>
           <ErrorBoundary>
-            <I18nextProvider i18n={i18n}>
-              <App />
-              <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover={false}
-                theme="light"
-                transition={Slide}
-              />
-            </I18nextProvider>
+            <FilterProvider>
+              <I18nextProvider i18n={i18n}>
+                <App />
+                <ToastContainer
+                  position="top-right"
+                  autoClose={5000}
+                  hideProgressBar={false}
+                  newestOnTop={false}
+                  closeOnClick
+                  rtl={false}
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover={false}
+                  theme="light"
+                  transition={Slide}
+                />
+              </I18nextProvider>
+            </FilterProvider>
           </ErrorBoundary>
         </ProviderRollbar>
       </React.StrictMode>

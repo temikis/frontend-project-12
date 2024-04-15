@@ -2,17 +2,18 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { ArrowUpCircleFill } from 'react-bootstrap-icons';
-import filter from 'leo-profanity';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
+import { useFilter } from '../../contexts/filterContex';
 import { addMessage } from '../../store/messagesApi';
 import { getCurrentUser } from '../../store/authSlice';
 
 const MessageInput = ({ activeChannel }) => {
   const [message, setMessage] = useState('');
   const { t } = useTranslation();
+  const filter = useFilter();
   const inputRef = useRef(null);
   const [onSubmitMessage, { isLoading }] = addMessage();
   const username = useSelector(getCurrentUser);

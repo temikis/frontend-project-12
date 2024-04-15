@@ -3,11 +3,11 @@ import { Formik } from 'formik';
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import { toast } from 'react-toastify';
-import filter from 'leo-profanity';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
+import { useFilter } from '../contexts/filterContex';
 import { editChannel } from '../store/channelsApi';
 
 const RenameChannel = (props) => {
@@ -15,6 +15,7 @@ const RenameChannel = (props) => {
   const [onSubmitChannel] = editChannel();
   const { id, name: currentName } = modalChannel.channel;
   const { t } = useTranslation();
+  const filter = useFilter();
 
   const onSubmitRenameChannel = async (newNameChannel) => {
     const { name } = newNameChannel;
@@ -45,6 +46,7 @@ const RenameChannel = (props) => {
   const inputRef = useRef();
   useEffect(() => {
     inputRef.current.focus();
+    inputRef.current.select();
   }, []);
 
   return (

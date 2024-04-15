@@ -4,11 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { toast } from 'react-toastify';
-import filter from 'leo-profanity';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
+import { useFilter } from '../contexts/filterContex';
 import { addChannel } from '../store/channelsApi';
 import { setActiveChannel } from '../store/uiSlice';
 
@@ -17,6 +17,7 @@ const AddChannel = (props) => {
   const [onSubmitChannel] = addChannel();
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const filter = useFilter();
 
   const onSubmitAddNewChannel = async (newChannel) => {
     const { name } = newChannel;

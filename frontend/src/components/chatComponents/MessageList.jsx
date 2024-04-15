@@ -26,4 +26,3 @@ const MessageList = ({ messages }) => {
 };
 
 export default MessageList;
-// { id: '5', body: 'text message2', channelId: '1', username: 'admin' },

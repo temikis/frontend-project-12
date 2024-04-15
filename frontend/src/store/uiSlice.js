@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const defaultChannel = { id: '1', name: 'general', removable: false };
+
 const initialState = {
   modalChannel: { type: null, channel: null },
-  activeChannel: { id: '1', name: 'general', removable: false },
-  defaultChannel: { id: '1', name: 'general', removable: false },
+  activeChannel: defaultChannel,
+  defaultChannel,
 };
 
 const uiSlice = createSlice({
@@ -19,8 +21,8 @@ const uiSlice = createSlice({
       return { ...state, activeChannel };
     },
     setDefaultChannel: (state, action) => {
-      const defaultChannel = action.payload;
-      return { ...state, defaultChannel };
+      const channel = action.payload;
+      return { ...state, defaultChannel: channel };
     },
   },
 });
