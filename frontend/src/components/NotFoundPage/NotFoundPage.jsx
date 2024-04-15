@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import Image from 'react-bootstrap/Image';
-import logo404 from './logo404.jpg';
+import logo404 from '../../assets/logo404.jpg';
 
 const NotFoundPage = () => {
   const { t } = useTranslation();

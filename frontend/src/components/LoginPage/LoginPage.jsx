@@ -11,7 +11,7 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import { Link, useNavigate } from 'react-router-dom';
-import reglogo from './reglogo.jpeg';
+import reglogo from '../../assets/reglogo.jpeg';
 import routes from '../../utils/routes.js';
 import { setCredentials } from '../../store/authSlice.js';
 

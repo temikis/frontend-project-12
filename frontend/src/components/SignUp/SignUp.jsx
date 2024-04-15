@@ -15,7 +15,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import routes from '../../utils/routes.js';
 import { setCredentials } from '../../store/authSlice';
-import logosingup from './logosingup.jpg';
+import logosingup from '../../assets/logosingup.jpg';
 
 const SignUp = () => {
   const dispatch = useDispatch();
