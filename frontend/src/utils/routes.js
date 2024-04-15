@@ -5,6 +5,9 @@ const routes = {
   login: () => `${apiPath}/login`,
   channelsPath: () => `${apiPath}/channels`,
   messagesPath: () => `${apiPath}/messages`,
+  root: () => '/',
+  loginPage: () => '/login',
+  signupPage: () => '/signup',
 };
 
 export default routes;

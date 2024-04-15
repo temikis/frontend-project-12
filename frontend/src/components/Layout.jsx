@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import { getCurrentUser, removeCredentials } from '../store/authSlice';
+import routes from '../utils/routes.js';
 
 const Layout = () => {
   const username = useSelector(getCurrentUser);
@@ -18,7 +19,7 @@ const Layout = () => {
     <div className="d-flex flex-column h-100">
       <Navbar collapseOnSelect expand="lg" bg="white" variant="light" className="shadow-sm">
         <Container>
-          <Navbar.Brand as={Link} to="/">Hexlet Chat</Navbar.Brand>
+          <Navbar.Brand as={Link} to={routes.root()}>Hexlet Chat</Navbar.Brand>
           {username && <Button variant="primary" onClick={logOut}>{t('buttons.exit')}</Button>}
         </Container>
       </Navbar>

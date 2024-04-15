@@ -30,7 +30,7 @@ const SignUp = () => {
       const res = await axios.post(routes.createNewUser(), { username, password });
       const userData = res.data;
       dispatch(setCredentials(userData));
-      navigate('/');
+      navigate(routes.root());
     } catch (err) {
       setSubmitting(false);
       if (err.isAxiosError && err.response.status === 409) {

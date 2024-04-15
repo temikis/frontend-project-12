@@ -10,11 +10,12 @@ import LoginPage from './LoginPage/LoginPage.jsx';
 import NotFoundPage from './NotFoundPage/NotFoundPage.jsx';
 import PrivateRoute from './PrivateRoute.jsx';
 import SignUp from './SignUp/SignUp.jsx';
+import routes from '../utils/routes.js';
 
 const App = () => (
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Layout />}>
+      <Route path={routes.root()} element={<Layout />}>
         <Route
           index
           element={(
@@ -23,8 +24,8 @@ const App = () => (
             </PrivateRoute>
           )}
         />
-        <Route path="login" element={<LoginPage />} />
-        <Route path="signup" element={<SignUp />} />
+        <Route path={routes.loginPage()} element={<LoginPage />} />
+        <Route path={routes.signupPage()} element={<SignUp />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
